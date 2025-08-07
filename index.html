@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FastAPI To-Do List</title>
+</head>
+<body>
+    <h1>📝 To-Do List</h1>
+
+    <!-- Add Task Form -->
+    <form method="post" action="/add">
+        <input type="text" name="task" placeholder="Enter task" required>
+        <button type="submit">Add</button>
+    </form>
+
+
+    <!-- Show Tasks -->
+    <ul>
+        {% for task in tasks %}
+        <li>
+            {{ task }}
+            <button onclick="deleteTask('{{ loop.index0 }}')">Delete</button>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <script>
+        function deleteTask(id) {
+            fetch(`/delete/${id}`, {
+                method: "DELETE"
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message || data.error);
+                location.reload();
+            });
+        }
+    </script>
+</body>
+</html>
